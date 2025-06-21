@@ -1,0 +1,34 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      # Pass environment variables to the container (optional)
+      # You can also rely on .env inside your project folder
+      DB_HOST: db
+      DB_PORT: 3306-3306
+      DB_DATABASE: gestion-lib
+      DB_USERNAME: root
+      DB_PASSWORD: mysecretpassword
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: gestion-lib
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+
+volumes:
+  dbdata:
